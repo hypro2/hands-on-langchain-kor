@@ -25,13 +25,19 @@ class CustomLLM(LLM):
     top_p: Optional[float] = 0.1
     top_k: Optional[int] = 40
     max_tokens: Optional[int] = 200
+    ## 추가 ##
     model: Any = None
+    tokenizer: Any = None
+    #########
 
     def __init__(self, model_folder_path,callbacks, **kwargs):
         super(CustomLLM, self).__init__()
         self.model_folder_path: str = model_folder_path
         self.callbacks = callbacks
+        ## 추가 ##
         self.model = AutoModelForCausalLM.from_pretrained(self.model_folder_path).cuda()
+        self.tokenizer = AutoTokenizer.from_pretrained(self.model_folder_path, use_fast=False)
+        #########
 
 
     @property
@@ -67,10 +73,10 @@ class CustomLLM(LLM):
         text_callback = None
         if run_manager:
             text_callback = partial(run_manager.on_llm_new_token, verbose=self.verbose)
-
-        tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
-        input_ids = tokenizer(prompt, max_length=4096, truncation=True, return_tensors='pt').input_ids.cuda()
-        streamer = TextIteratorStreamer(tokenizer, skip_prompt=True, skip_special_tokens=True)
+            
+        ## 추가 ##
+        input_ids = self.tokenizer(prompt, max_length=4096, truncation=True, return_tensors='pt').input_ids.cuda()
+        streamer = TextIteratorStreamer(self.tokenizer, skip_prompt=True, skip_special_tokens=True)
 
         generate_kwargs = dict(input_ids=input_ids,
                                max_new_tokens=params['max_tokens'],
@@ -81,7 +87,8 @@ class CustomLLM(LLM):
 
         t = Thread(target=self.model.generate, kwargs=generate_kwargs)
         t.start()
-
+        
+        # token별 스트리밍 생성해서, callback을 사용할 수 있게 수정
         response = ""
         for i, new_text in enumerate(streamer):
             if text_callback:
@@ -92,8 +99,11 @@ class CustomLLM(LLM):
 
         if stop:
             response = enforce_stop_tokens(response, stop)
-
+        #########
         return response
+
+
+### TEST ###
 
 class CustomSpaceSeparatedListOutputParser(BaseOutputParser):
     def parse(self, text: str):

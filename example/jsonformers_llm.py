@@ -81,7 +81,9 @@ class JSONformersLLM(LLM):
                                       tokenizer=self.tokenizer,
                                       json_schema=json_schema,
                                       prompt=prompt,
+                                      max_array_length=params['max_tokens'],
                                       max_number_tokens=params['max_tokens'],
+                                      max_string_token_length=params['max_tokens'],
                                       temperature=params['temperature']
                                       )
         text = model()

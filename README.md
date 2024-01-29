@@ -1,5 +1,5 @@
-# langchain_practice
-랭체인을 연습하기 위한 예제들 직접 만들거나 수집중 입니다. 많이 연습중!!!!
+# Hands on Langchain (KOR)
+랭체인을 연습하기 위한 예제들 직접 만들거나 수집해서 한글화 시키는 중입니다. 
 
 # 랭체인 (LangChain)
 

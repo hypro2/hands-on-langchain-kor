@@ -1,9 +1,10 @@
 # Hands on Langchain (KOR)
 랭체인을 연습하기 위한 예제들 직접 만들거나 수집해서 한글화 시키는 중입니다. 
 
-![image](https://github.com/hypro2/hands-on-langchain/assets/84513149/6959a7c8-735d-4961-8bdf-68f74bdbc70a)
+![image](https://github.com/hypro2/hands-on-langchain/assets/84513149/9e638954-96ca-447e-ad30-35fc7a277a7f)
 
-캐글에서 1400view를 넘겼습니다.
+
+캐글에서 2000view를 넘겼습니다.
 
 
 # 랭체인 (LangChain)
